@@ -6,7 +6,7 @@ const ImagesSection = () => {
     register,
     formState: { errors },
     watch,
-    setValue,
+    // setValue,
   } = useFormContext<HotelFormData>()
 
   const existingImageUrls = watch("imageUrls")
