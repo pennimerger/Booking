@@ -6,7 +6,14 @@ import userRoutes from "./routes/users"
 import authRoutes from "./routes/auth"
 import cookieParser from "cookie-parser"
 import path from "path"
+import {v2 as cloudinary} from "cloudinary"
+import myHotelRoutes from "./routes/my-hotels"
 
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+})
 mongoose.connect(process.env.CONNECTION_STRING as string)
 
 const app = express()
@@ -21,6 +28,12 @@ app.use(express.static(path.join(__dirname, "../../fBooking/dist"))) //serve fro
 
 app.use("/api/users", userRoutes)
 app.use("/api/auth", authRoutes)
+app.use("/api/my-hotels", myHotelRoutes)
+
+// For requests not api related
+app.get("*", (req: Request, res: Response)=>{
+  res.sendFile(path.join(__dirname, "../../fBooking/dist/index.html"))
+})
 
 // app.get("/api/test", async (req: Request, res: Response) => {
 //   res.json({ message: "Hello there!" })

@@ -2,3 +2,4 @@
 .env.e2e
 dist
 node_modules
+.DS_Store

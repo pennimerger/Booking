@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 const UI_URL = "http://localhost:5173/"
 
-test('allow sign in', async ({ page }) => {
+test('sign in', async ({ page }) => {
   await page.goto(UI_URL);
 
   // get sign in button
