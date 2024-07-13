@@ -25,6 +25,6 @@
   },
   "include": [
     "src/**/*",
-    "../bBooking/src/shared/types",
+    "src/bBooking/src/shared/types.ts",
   ]
 }
