@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser"
 import path from "path"
 import {v2 as cloudinary} from "cloudinary"
 import myHotelRoutes from "./routes/my-hotels"
+import hotelRoutes from "./routes/hotels"
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -29,6 +30,7 @@ app.use(express.static(path.join(__dirname, "../../fBooking/dist"))) //serve fro
 app.use("/api/users", userRoutes)
 app.use("/api/auth", authRoutes)
 app.use("/api/my-hotels", myHotelRoutes)
+app.use("/api/hotels", hotelRoutes)
 
 // For requests not api related
 app.get("*", (req: Request, res: Response)=>{

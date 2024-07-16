@@ -6,27 +6,27 @@ const ImagesSection = () => {
     register,
     formState: { errors },
     watch,
-    // setValue,
+    setValue,
   } = useFormContext<HotelFormData>()
 
   const existingImageUrls = watch("imageUrls")
 
-  // const handleDelete = (
-  //   event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  //   imageUrl: string
-  // ) => {
-  //   event.preventDefault()
-  //   setValue(
-  //     "imageUrls",
-  //     existingImageUrls.filter((url) => url !== imageUrl)
-  //   )
-  // }
+  const handleDelete = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    imageUrl: string
+  ) => {
+    event.preventDefault() //stops default form submission after button click.
+    setValue(
+      "imageUrls",
+      existingImageUrls.filter((url) => url !== imageUrl)
+    )
+  }
 
   return (
     <div>
       <h2 className="text-2xl font-bold mb-3">Images</h2>
       <div className="border rounded p-4 flex flex-col gap-4">
-        {/*{existingImageUrls && (
+        {existingImageUrls && (
           <div className="grid grid-cols-6 gap-4">
             {existingImageUrls.map((url) => (
               <div className="relative group">
@@ -40,7 +40,7 @@ const ImagesSection = () => {
               </div>
             ))}
           </div>
-        )}*/}
+        )}
 
         <input
           type="file"
