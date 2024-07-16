@@ -8,6 +8,8 @@ import EditHotel from "./pages/EditHotel"
 import Search from "./pages/Search"
 import Detail from "./pages/Detail"
 import Booking from "./pages/Booking"
+import MyBookings from "./pages/MyBookings"
+import Homepage from "./pages/Homepage"
 import {useAppContext} from "./contexts/AppContext"
 
 const App = () => {
@@ -16,7 +18,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Layout>
-          <p>Homepage</p>
+          <Homepage />
         </Layout>} />
         <Route path="/search" element={
           <Layout>
@@ -47,6 +49,10 @@ const App = () => {
             />
             <Route path="/hotel/:hotelId/booking" element={
               <Layout><Booking /></Layout>
+            }
+            />
+            <Route path="/my-bookings" element={
+              <Layout><MyBookings /></Layout>
             }
             />
             <Route path="/edit-hotel/:hotelId" element={
