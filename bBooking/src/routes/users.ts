@@ -3,8 +3,40 @@ import User from "../models/user"
 import jwt from "jsonwebtoken"
 import { check, validationResult } from "express-validator"
 import verifyToken from "../middleware/auth"
+import Mail from "../middleware/mail"
 
 const router = express.Router()
+
+router.post(
+  "/recover",
+  [check("email", "Email is required").isEmail()], async(req: Request, res:Response) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({message: errors.array()})
+    }
+    try{
+      const user = await User.findOne({
+        email: req.body.email
+      })
+      if (!user){
+      return res.status(400).json({ message: "Correct Email?" })
+      }
+      const token = jwt.sign(
+        { userId: user.id },
+        process.env.JWT_SECRET_KEY as string,
+        {
+          expiresIn: "1d",
+        }
+      )
+      const feedback = Mail(token, user.email)
+
+      return res.status(200).send({ message: feedback })
+    } catch (error) {
+      console.log(error)
+      res.status(500).send({ message: "Something went wrong" })
+    }
+  }
+)
 
 router.post(
   "/register",
