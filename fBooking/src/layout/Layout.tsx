@@ -10,13 +10,14 @@ interface Props {
 
 const Layout = ({children}:Props) => {
   const location = useLocation()
-  
+  const excludedPaths = ["/recover", "/sign-in", "/register", "/reset-password"]
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
        <Hero /> 
        <div className="container mx-auto">
-        {location.pathname !== "/recover" && <SearchBar />}
+       {!excludedPaths.includes(location.pathname) && <SearchBar />}
       </div> 
        <div className="container mx-auto py-10 flex-1">{children}</div> 
        <Footer /> 

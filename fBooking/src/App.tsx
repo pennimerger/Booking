@@ -11,8 +11,8 @@ import Booking from "./pages/Booking"
 import MyBookings from "./pages/MyBookings"
 import Homepage from "./pages/Homepage"
 import Recover from "./pages/Recover"
+import ResetPassword from "./pages/ResetPassword"
 import {useAppContext} from "./contexts/AppContext"
-import Mailer from "./components/Mailer"
 
 const App = () => {
   const {isLoggedIn} = useAppContext()
@@ -22,12 +22,14 @@ const App = () => {
         <Route path="/" element={<Layout>
           <Homepage />
         </Layout>} />
-        <Route path="/show" element={<Mailer resetLink="clickk4"/>} />
         <Route path="/search" element={
           <Layout>
           <Search />
         </Layout>
         } />
+        <Route path="/reset-password" element={<Layout>
+          <ResetPassword />
+        </Layout>} />
         <Route path="/detail/:hotelId" element={
           <Layout>
           <Detail />

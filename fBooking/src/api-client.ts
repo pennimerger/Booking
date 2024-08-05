@@ -1,6 +1,7 @@
 import { RegisterFormData } from "./pages/Register"
 import { SignInFormData } from "./pages/SignIn"
 import { RecoverFormData } from "./pages/Recover"
+import { ResetPasswordFormData } from "./pages/ResetPassword"
 import {
   HotelSearchResponse,
   HotelType,
@@ -42,6 +43,25 @@ export const register = async (formData: RegisterFormData) => {
 export const recover = async (formData: RecoverFormData) => {
   const response = await fetch(`${API_BASE_URL}/api/users/recover`, {
     method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData)
+  })
+
+  const body = await response.json()
+  if(!response.ok){
+    throw new Error(body.message)
+  }
+}
+
+export const resetPassword = async (formData: ResetPasswordFormData) => {
+  const urlParams = new URLSearchParams(window.location.search)
+  const token = urlParams.get('token')
+
+  const response = await fetch(`${API_BASE_URL}/api/users/me/${token}`, {
+    method: "PUT",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",

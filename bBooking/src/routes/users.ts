@@ -28,7 +28,8 @@ router.post(
           expiresIn: "1d",
         }
       )
-      const feedback = Mail(token, user.email)
+
+      const feedback = Mail({token:token, email:user.email})
 
       return res.status(200).send({ message: feedback })
     } catch (error) {
@@ -79,6 +80,7 @@ router.post(
         secure: process.env.NODE_ENV === "production",
         maxAge: 86400000, // 1d in ms.
       })
+      // return res.status(200).send(user)
       return res.status(200).send({ message: "User registered OK" })
     } catch (error) {
       console.log(error)
@@ -96,6 +98,27 @@ router.get("/me", verifyToken, async(req:Request, res:Response)=>{
       return res.status(400).json({ message: "User not found" })
     }
     res.json(user)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: "something went wrong" })
+  }
+})
+
+router.put("/me/:token", verifyToken,
+  [
+    check("password", "Password with 6 or more characters required").isLength({
+      min: 6,
+    }),
+  ], async(req:Request, res:Response)=>{
+  const userId = req.userId
+  const newPassword = req.body
+
+  try {
+    const user = await User.findByIdAndUpdate(userId, newPassword, {new: true, runValidators: true})
+    if (!user) {
+      return res.status(404).json({ message: "User not found" })
+    }
+    return res.status(201).send(user)
   } catch (error) {
     console.log(error)
     res.status(500).json({ message: "something went wrong" })

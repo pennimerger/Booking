@@ -1,41 +1,36 @@
 import nodemailer,{SentMessageInfo} from "nodemailer"
-import React from 'react'
-// import ReactDOMServer from 'react-dom/server'
-import {renderToString} from 'react-dom/server'
-// import Mailer from "../../../fBooking/src/components/Mailer"
-const Mailer = await import("../../../fBooking/src/components/Mailer")
+import { emailTemplate } from "../assets/emailTemplate";
 
-// const html: JSX.Element = <Mailer resetLink={resetLink} />
-const renderMailerTemplate = (resetLink: string): string => {
-  return <Mailer resetLink={resetLink} />
+interface MailProps {
+  token: string;
+  email: string;
 }
 
-const Mail = (token:string, email:string) =>{
+const Mail = ({token, email}:MailProps) =>{
 	const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${token}`
-	const html = renderToString(renderMailerTemplate(resetLink))
-  // const template = ReactDOMServer.renderToString(<Mailer resetLink={resetLink} />)
-  const template = ""
 
 	const transporter = nodemailer.createTransport({
 		service: "gmail",
 		auth: {
 			user: process.env.HOST_EMAIL as string,
 			pass: process.env.HOST_PASSWORD as string
-		}
+		},
+		// logger:true,
+		// debug: true,
 	})
 
 	const mailOptions = {
 		from: process.env.HOST_EMAIL as string,
 		to: email,
 		subject: "Reset Password",
-		html: template
+		html: emailTemplate(resetLink)
 	}
 
-	transporter.sendMail(mailOptions, (error: any|null, info: SentMessageInfo) =>{
-		if (error){
-			return error
+	transporter.sendMail(mailOptions, (error: any|null, info: SentMessageInfo)=>{
+		if (!error){
+			return info.response
 		}
-		return info.response
+		return error
 	})
 }
 
